@@ -104,26 +104,18 @@ RUN /usr/bin/lscpu
 # Validate script binary
 RUN /usr/bin/script --version
 
-# Add motd explaining the control container.
+# Add Ether motd.
 RUN rm -f /etc/motd /etc/issue
 COPY --chown=root:root motd /etc/
-# Add custom PS1 to show you are in the control container.
-ARG CUSTOM_PS1='[\u@control]\$ '
-RUN echo "PS1='$CUSTOM_PS1'" > "/etc/profile.d/bottlerocket-ps1.sh"
-# Add bashrc that shows the motd.
+# Custom PS1.
+ARG CUSTOM_PS1='[\u@ether]\$ '
+RUN echo "PS1='$CUSTOM_PS1'" > "/etc/profile.d/ether-ps1.sh"
+# bashrc that shows the motd.
 COPY ./bashrc /etc/skel/.bashrc
 # SSM starts sessions with 'sh', not 'bash', which for us is a link to bash.
-# Furthermore, it starts sh as an interactive shell, but not a login shell.
-# In this mode, the only startup file respected is the one pointed to by the
-# ENV environment variable.  Point it to our bashrc, which just prints motd.
+# It starts sh as an interactive but non-login shell, so the only startup file
+# respected is the one pointed to by the ENV environment variable.
 ENV ENV=/etc/skel/.bashrc
-
-# Add our helpers to quickly interact with the admin container.
-COPY --chmod=755 \
-    ./disable-admin-container \
-    ./enable-admin-container \
-    ./enter-admin-container \
-    /usr/bin/
 
 # Create our user in the group that allows API access.
 RUN groupadd -g 274 api && \
