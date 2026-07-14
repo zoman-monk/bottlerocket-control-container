@@ -1,9 +1,8 @@
 
-             Ether — Zomato Deployment (Limited-Access Shell)
+              ┌─────────────────┐
+              │      ETHER      │
+              └─────────────────┘
 
-  This shell is intentionally restricted. The host API is not reachable
-  from this container, and escalation to the host is not available.
-
-  If you need operational assistance, please contact the Zomato
+  If you need operational assistance, please contact the Ether
   operations team.
 
